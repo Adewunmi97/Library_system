@@ -11,10 +11,17 @@ class Book
     @status = "available"
     @created_at = Time.now
     end
+    
+    def available?
+        @status == "available"
+    end
+
+
     private
+
+
     def generate_unique_id
-    # Implement unique ID generation
     uuid = SecureRandom.uuid
-    puts uuid
+    uuid 
     end
    end
