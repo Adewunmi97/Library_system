@@ -10,22 +10,24 @@ class Library
     @members = []
     end
 
-    def add_member(name:, email:)
-        member = Member.new(name: name, email: email)
-        @member << member
-        member
-    end
-
+    
     def add_book(book)
         @books << book
         book
     # Add validation and book addition logic
     end
 
+
     def remove_book(book_id)
-        @books.delete(book_id)
-    # Add book removal logic
+        book = @books.find { |b| b.id == book_id }
+        if book
+            @books.delete(book_id)
+        else
+            raise "Book not found!"
+        end
     end
+
+
     def search_books(query)
         if query.nil? || !query.is_a?(string)
             raise ArgumentError, "Query must be a non-empty srting!"
@@ -35,6 +37,21 @@ class Library
             book.author.downcase.include?(query.downcase)||
             book.isbn.downcase.include?(query.downcase)
         end  # Implement search functionality
+    end
+
+    # Member management
+
+    def add_member(member)
+        @member << member
+        member
+    end
+
+    def update_member(member_id, name:, email:)
+        member = @members.find { |m| m.id == member_id}
+        raise "Member not found" unless member
+         member.name = name if name
+         member.email = email if email
+         member
     end
 end
 
