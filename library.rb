@@ -27,6 +27,9 @@ class Library
     # Add book removal logic
     end
     def search_books(query)
+        if query.nil? || !query.is_a?(string)
+            raise ArgumentError, "Query must be a non-empty srting!"
+        end
         @books.select do |book|
             book.title.downcase.include?(query.downcase)||
             book.author.downcase.include?(query.downcase)||
