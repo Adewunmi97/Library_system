@@ -27,11 +27,16 @@ class Library
     # Add book removal logic
     end
     def search_books(query)
-        @books.select { |book| book.query == query }
-    # Implement search functionality
+        @books.select do |book|
+            book.title.downcase.include?(query.downcase)||
+            book.author.downcase.include?(query.downcase)||
+            book.isbn.downcase.include?(query.downcase)
+        end  # Implement search functionality
     end
 end
 
 book1 = Book.new(title: "melann", author: "ade", isbn: "123")
 lib = Library.new(name: "my lib")
 lib.add_book(book1)
+lib.search_books(book1.title)
+lib.remove_book(book1.id)
