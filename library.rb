@@ -16,8 +16,7 @@ class Library
         member
     end
 
-    def add_book(title:, author:, isbn:)
-        book = Book.new(title: title, author: author, isbn: isbn)
+    def add_book(book)
         @books << book
         book
     # Add validation and book addition logic
@@ -32,3 +31,7 @@ class Library
     # Implement search functionality
     end
 end
+
+book1 = Book.new(title: "melann", author: "ade", isbn: "123")
+lib = Library.new(name: "my lib")
+lib.add_book(book1)

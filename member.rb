@@ -21,7 +21,7 @@ class Member
 
     def borrow_book(book)
         if @borrowed_books.include?(book)
-            puts "#{book.title} has been borrowed"
+            puts "#{book.title} has been borrowed by #{@name}"
         else
             @borrowed_books << book
             book.status = "borrowed"
