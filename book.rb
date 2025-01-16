@@ -1,6 +1,9 @@
 require 'securerandom'
+require_relative 'id_module'
 
 class Book
+    include IDGenerator
+
     attr_accessor :title, :author, :isbn, :status
     attr_reader :id, :created_at
     def initialize(title:, author:, isbn:)
@@ -14,14 +17,5 @@ class Book
     
     def available?
         @status == "available"
-    end
-
-
-    private
-
-
-    def generate_unique_id
-    uuid = SecureRandom.uuid
-    uuid 
     end
    end

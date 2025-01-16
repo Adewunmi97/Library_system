@@ -1,6 +1,9 @@
 require 'securerandom'
+require_relative 'id_module'
 
 class Member
+    include IDGenerator
+
     attr_accessor :name, :email, :membership_status
     attr_reader :id, :borrowed_books
     def initialize(name:, email:)
@@ -36,4 +39,6 @@ class Member
             puts "#{book.title} has not been borrowed"
         end
     end
+
+    
 end

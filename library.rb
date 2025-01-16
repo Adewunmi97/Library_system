@@ -14,7 +14,6 @@ class Library
     def add_book(book)
         @books << book
         book
-    # Add validation and book addition logic
     end
 
 
@@ -29,14 +28,15 @@ class Library
 
 
     def search_books(query)
-        if query.nil? || !query.is_a?(string)
+        if query.nil? || !query.is_a?(String)
             raise ArgumentError, "Query must be a non-empty srting!"
+            return []
         end
         @books.select do |book|
             book.title.downcase.include?(query.downcase)||
             book.author.downcase.include?(query.downcase)||
             book.isbn.downcase.include?(query.downcase)
-        end  # Implement search functionality
+        end  
     end
 
     # Member management
@@ -53,10 +53,21 @@ class Library
          member.email = email if email
          member
     end
+
+    def no_of_borrowed_books_by_member(member)
+        if @members.include?(member)
+            member.borrowed_books.count
+        else
+            puts "Member not found in the library"
+            0
+        end
+    end
 end
 
 book1 = Book.new(title: "melann", author: "ade", isbn: "123")
+mem1= Member.new(name: "Ade", email: "sun@gmail.com")
 lib = Library.new(name: "my lib")
 lib.add_book(book1)
 lib.search_books(book1.title)
 lib.remove_book(book1.id)
+lib.no_of_borrowed_books_by_member(mem1)
