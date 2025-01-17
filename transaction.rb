@@ -1,4 +1,8 @@
+require_relative 'id_module'
+
 class Transaction
+    include IDGenerator
+    
     attr_reader :id, :book, :member, :checkout_date, :due_date, :return_date
 
     LATE_FEE = 50.00
@@ -14,6 +18,11 @@ class Transaction
 
     def calculate_late_fees
         overdue = ((@return_date || Time.now) - @due_date).to_i/(60 * 60 * 24)
+        if overdue <= 0
+            puts 0
+        else
+            overdue * LATE_FEE
+        end
     end
 
     private
