@@ -79,18 +79,35 @@ module LibrarySystem
       transaction.complete_return
     end
 
-    # Debug methods
     def list_all_books
       puts "\nAll Books in Library:"
-      @books.each do |book|
-        puts "#{book.title} by #{book.author} (#{book.status})"
+      if @books.empty?
+        puts "No books available."
+      else
+        @books.each do |book|
+          puts "ID: #{book.id}"
+          puts "Title: #{book.title}"
+          puts "Author: #{book.author}"
+          puts "ISBN: #{book.isbn}"
+          puts "Status: #{book.status}"
+          puts "-------------------"
+        end
       end
     end
 
     def list_all_members
-      puts "\nAll Members in Library:"
-      @members.each do |member|
-        puts "#{member.name} (#{member.email})"
+      puts "\nAll Library Members:"
+      if @members.empty?
+        puts "No members registered."
+      else
+        @members.each do |member|
+          puts "ID: #{member.id}"
+          puts "Name: #{member.name}"
+          puts "Email: #{member.email}"
+          puts "Status: #{member.membership_status}"
+          puts "Borrowed Books: #{member.borrowed_books.count}"
+          puts "-------------------"
+        end
       end
     end
 

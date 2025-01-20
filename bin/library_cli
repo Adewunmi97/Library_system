@@ -1,0 +1,119 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/library_system'
+
+def display_menu
+  puts "\n=== Library Management System ==="
+  puts "1. Add Book"
+  puts "2. Register Member"
+  puts "3. Checkout Book"
+  puts "4. Return Book"
+  puts "5. Search Books"
+  puts "6. List All Books"
+  puts "7. List All Members"
+  puts "8. Exit"
+  print "\nSelect an option: "
+end
+
+def handle_add_book(library)
+  print "Enter book title: "
+  title = gets.chomp
+  print "Enter author name: "
+  author = gets.chomp
+  print "Enter ISBN (format: XXX-XXX-XXX): "
+  isbn = gets.chomp
+
+  book = LibrarySystem::Book.new(title: title, author: author, isbn: isbn)
+  library.add_book(book)
+  puts "\nBook added successfully!"
+rescue LibrarySystem::ValidationError => e
+  puts "\nError: #{e.message}"
+end
+
+def handle_register_member(library)
+  print "Enter member name: "
+  name = gets.chomp
+  print "Enter member email: "
+  email = gets.chomp
+
+  member = LibrarySystem::Member.new(name: name, email: email)
+  library.add_member(member)
+  puts "\nMember registered successfully!"
+rescue LibrarySystem::ValidationError => e
+  puts "\nError: #{e.message}"
+end
+
+def handle_checkout(library)
+  puts "\nAvailable Books:"
+  library.books.each do |book|
+    puts "ID: #{book.id} - #{book.title} by #{book.author}" if book.available?
+  end
+
+  puts "\nMembers:"
+  library.members.each do |member|
+    puts "ID: #{member.id} - #{member.name}"
+  end
+
+  print "\nEnter member ID: "
+  member_id = gets.chomp
+  print "Enter book ID: "
+  book_id = gets.chomp
+
+  library.process_checkout(member_id: member_id, book_id: book_id)
+  puts "\nBook checked out successfully!"
+rescue StandardError => e
+  puts "\nError: #{e.message}"
+end
+
+def handle_return(library)
+  print "Enter member ID: "
+  member_id = gets.chomp
+  print "Enter book ID: "
+  book_id = gets.chomp
+
+  library.process_return(member_id: member_id, book_id: book_id)
+  puts "\nBook returned successfully!"
+rescue StandardError => e
+  puts "\nError: #{e.message}"
+end
+
+def handle_search(library)
+  print "Enter search term: "
+  query = gets.chomp
+
+  results = library.search_books(query)
+  if results.empty?
+    puts "\nNo books found."
+  else
+    puts "\nSearch Results:"
+    results.each do |book|
+      puts "#{book.title} by #{book.author} (#{book.status})"
+    end
+  end
+end
+
+def main
+  library = LibrarySystem::Library.new(name: "My Library")
+  
+  loop do
+    display_menu
+    choice = gets.chomp.to_i
+
+    case choice
+    when 1 then handle_add_book(library)
+    when 2 then handle_register_member(library)
+    when 3 then handle_checkout(library)
+    when 4 then handle_return(library)
+    when 5 then handle_search(library)
+    when 6 then library.list_all_books
+    when 7 then library.list_all_members
+    when 8
+      puts "\nGoodbye!"
+      break
+    else
+      puts "\nInvalid option. Please try again."
+    end
+  end
+end
+
+main 
